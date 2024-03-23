@@ -2,6 +2,7 @@ package com.webProject.codeAcademy.controllers;
 
 import com.webProject.codeAcademy.entities.User;
 import com.webProject.codeAcademy.repositories.UserRepositories;
+import com.webProject.codeAcademy.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,45 +11,35 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private UserRepositories userRepositories;
+    private UserService userService;
 
-    public UserController(UserRepositories userRepositories) {
-        this.userRepositories = userRepositories;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepositories.findAll();
+        return userService.getAllUsers();
     }
 
     @PostMapping
     public User createUser(@RequestBody User newUser) {
-        return userRepositories.save(newUser);
+        return userService.saveOneUser(newUser);
     }
 
     @GetMapping("/{userId}")
     public User getOneUser(@PathVariable Long userId) {
         //custom exception ekle
-        return userRepositories.findById(userId).orElse(null);
+        return userService.getOneUser(userId);
     }
 
     @PutMapping("/{userId}")
     public User updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
-        Optional<User> user = userRepositories.findById(userId);
-        if (user.isPresent()) {
-            User foundUser = user.get();
-            foundUser.setUserName(newUser.getUserName());
-            foundUser.setPassword(newUser.getPassword());
-            userRepositories.save(foundUser);
-            return foundUser;
-        } else {
-            //custom exception ekle
-            return null;
-        }
+        return userService.updateOneUser(userId,newUser);
     }
 
         @DeleteMapping("/{userId}")
         public void  deleteOneUser(@PathVariable Long userId){
-           userRepositories.deleteById(userId);
+           userService.deleteById(userId);
         }
 }
