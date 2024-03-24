@@ -3,6 +3,7 @@ package com.webProject.codeAcademy.controllers;
 import com.webProject.codeAcademy.entities.User;
 import com.webProject.codeAcademy.repositories.UserRepositories;
 import com.webProject.codeAcademy.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    @Autowired
     private UserService userService;
 
     public UserController(UserService userService) {
