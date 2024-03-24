@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
